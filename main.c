@@ -331,39 +331,3 @@ void menuAdmin() {
     } while (opc != 8);
 }
 
-
-void menuUser(char *login) {
-    int op;
-    do {
-        printf("\n--- Menu Usuario ---\n1-Adic. Saldo\n2-Sacar\n3-Comprar\n4-Vender\n5-Extrato\n6-Atualizar Cotacoes\n7-Sair\n> ");
-        scanf("%d", &op);
-        switch (op) {
-            case 1: adicionarSaldo(login); break;
-            case 2: sacarSaldo(login); break;
-            case 3: comprarCripto(login); break;
-            case 4: venderCripto(login); break;
-            case 5: verExtrato(login); break;
-            case 6: atualizarCotacoes(); break;
-        }
-    } while (op != 7);
-}
-
-int loginSistema(char *loginOut) {
-    char login[TAM], senha[TAM];
-    printf("Login: "); scanf("%s", login);
-    printf("Senha: "); scanf("%s", senha);
-    int idx = buscarUsuario(login);
-    if (idx == -1 || strcmp(usuarios[idx].senha, senha) != 0) return -1;
-    strcpy(loginOut, login);
-    return strcmp(usuarios[idx].tipo, "admin") == 0 ? 1 : 2;
-}
-
-int main() {
-    carregarUsuarios();
-    carregarCriptos();
-    char login[TAM];
-    int tipo = loginSistema(login);
-    if (tipo == -1) { printf("Login invalido.\n"); return 0; }
-    tipo == 1 ? menuAdmin() : menuUser(login);
-    return 0;
-}
